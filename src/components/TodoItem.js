@@ -7,9 +7,9 @@ class TodoItem extends Component {
 
     render() {
         return (
-            <div className="TodoItem">
-                <p className={(this.props.options.isDone == true ? 'done-job ' : '') + 'job-title text-info'} data-description={this.description}>{this.props.title}</p>
-            </div>
+            <li className={this.props.isCompleted === true ? 'completed' : ''}>
+                <div className="form-check"> <label className="form-check-label"> <input className="checkbox" type="checkbox" defaultChecked={this.props.isCompleted} /> {this.props.title} <i className="input-helper"></i></label> </div> <i className="remove mdi mdi-close-circle-outline"></i>
+            </li>
         );
     }
 }
