@@ -8,6 +8,7 @@ import './App.css';
 
 import TodoItem from './components/TodoItem';
 
+const textHolders = ['What do you need to do today?', 'What next you want to do?', 'Type your job!']
 class App extends Component {
   constructor() {
     super()
@@ -37,9 +38,31 @@ class App extends Component {
         isCompleted: false
       }
     ]
+
+    // state
+    this.state = {
+      placeholderForInput: 0
+    }
+
+    // change state
+    setInterval(() => {
+      this.setState({
+        placeholderForInput: this.getPlaceholderInput(this.state.placeholderForInput)
+      })
+    }, 2000);
   };
 
+  getPlaceholderInput(currentPosition) {
+    switch (currentPosition) {
+      case textHolders.length - 1:
+        return 0
+      default:
+        return currentPosition + 1
+    }
+  }
+
   render() {
+    const {placeholderForInput} = this.state // this syntax only useable from ES6 
     return (
       <div className="App">
           <div className="page-content page-container" id="page-content">
@@ -50,13 +73,21 @@ class App extends Component {
                           <div className="card-body">
                               <h2 className="card-title my-3">Awesome Todo list</h2>
                               <div className="add-items d-flex">
-                                <input type="text" className="form-control todo-list-input" placeholder="What do you need to do today?" /> 
+                                {/* DMSt: demo for state */}
+                                <input type="text" className="form-control todo-list-input" placeholder={textHolders[placeholderForInput]} />
+                                {/* end DMSt */}
                                 <button className="add btn btn-primary font-weight-bold todo-list-add-btn">Add</button> 
                               </div>
                               <div className="list-wrapper">
                                 <ul className="d-flex flex-column-reverse todo-list">
                                   {
-                                    this.listItems.map((item, index) => <TodoItem isCompleted={item.isCompleted} key={index} title={item.title} />)
+                                    this.listItems.length > 0 && this.listItems.map((item, index) => <TodoItem item={item} key={index} />)
+                                  }
+                                  {
+                                  this.listItems.length == 0 &&
+                                  <div className="App">
+                                    <p className="alert alert-info">You have not job yet</p>
+                                  </div>
                                   }
                                 </ul>
                               </div>
