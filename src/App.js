@@ -21,6 +21,7 @@ class App extends Component<{}, any> {
     // state
     this.state = {
       placeholderForInput: 0,
+      valueInput: '',
       listItems: [
         {
           title: 'For what reason would it be advisable.',
@@ -53,6 +54,9 @@ class App extends Component<{}, any> {
 
     // this.toggleComplete = this.toggleComplete.bind(this)
     this.createNewJobItem = this.createNewJobItem.bind(this)
+    this.onTypeJob = this.onTypeJob.bind(this)
+    this.onChangeTypeJob = this.onChangeTypeJob.bind(this)
+    // this.deleteJob = this.deleteJob.bind(this)
 
     // change state
     setInterval(() => {
@@ -73,31 +77,91 @@ class App extends Component<{}, any> {
   }
 
   // handle toggle complete job
-  toggleComplete(key) {
-    var arrListItems = this.state.listItems
-    arrListItems[key].isCompleted = !arrListItems[key].isCompleted
+  toggleComplete(item) {
+    const isCompleted = item.isCompleted
+    const {listItems} = this.state
+    const index = listItems.indexOf(item)
+
     this.setState({
-      listItems: arrListItems
+      listItems: [
+        ...listItems.slice(0,index),
+        {
+          ...item,
+          isCompleted: !isCompleted
+        },
+        ...listItems.slice(index + 1)
+      ]
     })
   }
 
-  // create new job
+  // create new job - demo for REF in React
   createNewJobItem() {
-    console.log(this.refNewJobItem.current.value)
-    var arrListItems = this.state.listItems
-    arrListItems.push({
-      title: this.refNewJobItem.current.value,
-      isCompleted: false
-    })
+    const title = this.refNewJobItem.current.value
+    if(title.trim()) {
+      const {listItems} = this.state
+      this.setState({
+        listItems: [
+          ...listItems,
+          {
+            title: title,
+            isCompleted: false
+          }
+        ]
+      })
+    }
+    else {
+      alert('Job can not be empty')
+    }
+  }
+
+  // change value of Input when type
+  onChangeTypeJob(event) {
     this.setState({
-      listItems: arrListItems
+      valueInput: event.target.value
+    })
+  }
+
+  // handle key up of input job
+  onTypeJob(event) {
+    const title = event.target.value
+    if(event.keyCode === 13) {
+      if(title.trim()) {
+        const {listItems} = this.state
+        this.setState({
+          listItems: [
+            ...listItems,
+            {
+              title: title,
+              isCompleted: false
+            }
+          ]
+        })
+      }
+      else {
+        alert('Job can not be empty')
+      }
+      this.setState({
+        valueInput: ''
+      })
+    }
+  }
+  
+  // Delete a job
+  deleteJob(item) {
+    const {listItems} = this.state
+    const index = listItems.indexOf(item)
+    this.setState({
+      listItems: [
+        ...listItems.slice(0, index),
+        ...listItems.slice(index + 1)
+      ]
     })
   }
 
   // render
   render() {
     const {placeholderForInput} = this.state // this syntax only useable from ES6
-    const {listItems} = this.state 
+    const {listItems, valueInput} = this.state 
     return (
       <div className="App">
           <div className="page-content page-container" id="page-content">
@@ -109,15 +173,15 @@ class App extends Component<{}, any> {
                               <h2 className="card-title my-3">Awesome Todo list</h2>
                               <div className="add-items d-flex">
                                 {/* DMSt: demo for state */}
-                                <input type="text" className="form-control todo-list-input" ref={this.refNewJobItem} placeholder={textHolders[placeholderForInput]} />
+                                <input type="text" value={valueInput} onChange={this.onChangeTypeJob} className="form-control todo-list-input" onKeyUp={this.onTypeJob} ref={this.refNewJobItem} placeholder={textHolders[placeholderForInput]} />
                                 {/* end DMSt */}
                                 <button className="add btn btn-primary font-weight-bold todo-list-add-btn" onClick={this.createNewJobItem}>Add</button> 
                               </div>
                               <div className="list-wrapper">
                                 <ul className="d-flex flex-column-reverse todo-list">
                                   {
-                                    listItems.length > 0 && listItems.map((item, index) => <TodoItem item={item} key={index} onClick={this.toggleComplete.bind(this,index)} />)
-                                    // listItems.length > 0 && listItems.map((item, index) => <TodoItem item={item} key={index} onClick={() => this.toggleComplete(index)} />)
+                                    // listItems.length > 0 && listItems.map((item, index) => <TodoItem item={item} key={index} onClick={this.toggleComplete.bind(this,index)} />)
+                                    listItems.length > 0 && listItems.map((item, index) => <TodoItem item={item} key={index} onDeleteJob={() => this.deleteJob(item)} onToggleJobComplete={() => this.toggleComplete(item)} />)
                                   }
                                   {
                                   listItems.length === 0 &&
