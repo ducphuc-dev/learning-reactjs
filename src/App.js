@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import classNames from 'classnames'
 import './css/bootstrap.min.css'
 import './css/todolist.css'
 // import './javascripts/jquery.min.js'
@@ -22,6 +23,7 @@ class App extends Component<{}, any> {
     this.state = {
       placeholderForInput: 0,
       valueInput: '',
+      currentTab: 'all',
       listItems: [
         {
           title: 'For what reason would it be advisable.',
@@ -158,10 +160,24 @@ class App extends Component<{}, any> {
     })
   }
 
+  // change tab
+  onChangeTab(tab) {
+    this.setState({
+      currentTab: tab
+    })
+  }
+
   // render
   render() {
     const {placeholderForInput} = this.state // this syntax only useable from ES6
-    const {listItems, valueInput} = this.state 
+    const {listItems, valueInput, currentTab} = this.state
+    var displayItems = [...listItems]
+    if(currentTab == 'active') {
+      displayItems = listItems.filter((item) => item.isCompleted === false)
+    }
+    else if(currentTab == 'completed'){
+      displayItems = listItems.filter((item) => item.isCompleted === true)
+    } 
     return (
       <div className="App">
           <div className="page-content page-container" id="page-content">
@@ -171,6 +187,10 @@ class App extends Component<{}, any> {
                       <div className="card px-3">
                           <div className="card-body">
                               <h2 className="card-title my-3">Awesome Todo list</h2>
+                                {
+                                  listItems.length > 0 &&
+                                  <p>{listItems.length} {listItems.length > 1 ? 'items' : 'item'} left</p>
+                                }
                               <div className="add-items d-flex">
                                 {/* DMSt: demo for state */}
                                 <input type="text" value={valueInput} onChange={this.onChangeTypeJob} className="form-control todo-list-input" onKeyUp={this.onTypeJob} ref={this.refNewJobItem} placeholder={textHolders[placeholderForInput]} />
@@ -181,16 +201,23 @@ class App extends Component<{}, any> {
                                 <ul className="d-flex flex-column-reverse todo-list">
                                   {
                                     // listItems.length > 0 && listItems.map((item, index) => <TodoItem item={item} key={index} onClick={this.toggleComplete.bind(this,index)} />)
-                                    listItems.length > 0 && listItems.map((item, index) => <TodoItem item={item} key={index} onDeleteJob={() => this.deleteJob(item)} onToggleJobComplete={() => this.toggleComplete(item)} />)
+                                    displayItems.length > 0 && displayItems.map((item, index) => <TodoItem item={item} key={index} onDeleteJob={() => this.deleteJob(item)} onToggleJobComplete={() => this.toggleComplete(item)} />)
                                   }
                                   {
-                                  listItems.length === 0 &&
+                                  displayItems.length === 0 &&
                                   <div className="App">
                                     <p className="alert alert-info">You have not job yet</p>
                                   </div>
                                   }
                                 </ul>
                               </div>
+                          </div>
+                          <div className="card-footer">
+                            <ul className="filter-nav">
+                              <li className={classNames('filter-item mx-2', { active:  currentTab === 'all'})} onClick={() => this.onChangeTab('all')}>All</li>
+                              <li className={classNames('filter-item mx-2', { active:  currentTab === 'active'})} onClick={() => this.onChangeTab('active')}>Active</li>
+                              <li className={classNames('filter-item mx-2', { active:  currentTab === 'completed'})} onClick={() => this.onChangeTab('completed')}>Completed</li>
+                            </ul>
                           </div>
                       </div>
                   </div>
