@@ -77,7 +77,7 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 
 ![setting deploy](https://images.viblo.asia/full/6273ae6b-ccb2-4fc6-8416-0c8d9a63f584.png)
 
-> Rung deploy app
+> Run deploy app
 
 `npm run deploy`
 

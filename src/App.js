@@ -172,10 +172,10 @@ class App extends Component<{}, any> {
     const {placeholderForInput} = this.state // this syntax only useable from ES6
     const {listItems, valueInput, currentTab} = this.state
     var displayItems = [...listItems]
-    if(currentTab == 'active') {
+    if(currentTab === 'active') {
       displayItems = listItems.filter((item) => item.isCompleted === false)
     }
-    else if(currentTab == 'completed'){
+    else if(currentTab === 'completed'){
       displayItems = listItems.filter((item) => item.isCompleted === true)
     } 
     return (
