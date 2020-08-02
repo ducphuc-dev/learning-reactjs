@@ -81,3 +81,6 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 
 `npm run deploy`
 
+### PropTypes
+View official document [here](https://www.npmjs.com/package/prop-types) or view in reactjs document [here](https://reactjs.org/docs/typechecking-with-proptypes.html)
+

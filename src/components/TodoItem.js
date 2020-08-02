@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types'
 class TodoItem extends Component {
     constructor(props) {
         super(props)
@@ -13,6 +14,15 @@ class TodoItem extends Component {
             </li>
         );
     }
+}
+
+// Define props type
+TodoItem.propTypes = {
+    item: PropTypes.shape({
+        isCompleted: PropTypes.bool.isRequired,
+        title: PropTypes.string.isRequired
+    }),
+    onToggleJobComplete: PropTypes.func
 }
 
 export default TodoItem;
