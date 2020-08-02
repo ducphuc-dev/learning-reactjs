@@ -84,3 +84,6 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 ### PropTypes
 View official document [here](https://www.npmjs.com/package/prop-types) or view in reactjs document [here](https://reactjs.org/docs/typechecking-with-proptypes.html)
 
+### Lifecycles of Component
+View document an example [here](https://reactjs.org/blog/2018/03/27/update-on-async-rendering.html#initializing-state)
+

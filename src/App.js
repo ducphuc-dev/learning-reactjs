@@ -59,14 +59,18 @@ class App extends Component<{}, any> {
     this.onTypeJob = this.onTypeJob.bind(this)
     this.onChangeTypeJob = this.onChangeTypeJob.bind(this)
     // this.deleteJob = this.deleteJob.bind(this)
+    
+  };
 
+  componentDidMount() {
+    this.refNewJobItem.current.focus()
     // change state
     setInterval(() => {
       this.setState({
         placeholderForInput: this.getPlaceholderInput(this.state.placeholderForInput)
       })
     }, 2000);
-  };
+  }
 
   // change placeholder of input new job
   getPlaceholderInput(currentPosition) {

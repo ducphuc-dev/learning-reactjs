@@ -14,6 +14,18 @@ class TodoItem extends Component {
             </li>
         );
     }
+
+    componentDidMount() {
+        console.log('Render Job Item')
+    }
+
+    componentDidUpdate() {
+        console.log('Updated Job Item')
+    }
+
+    componentWillUnmount() {
+        console.log('Job Item will be removed')
+    }
 }
 
 // Define props type
